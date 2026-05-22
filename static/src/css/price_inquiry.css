@@ -1,0 +1,53 @@
+.price_inquiry_header{
+    text-align:center;
+    padding:20px;
+    margin-bottom:20px;
+    background:linear-gradient(135deg,#6366f1,#4f46e5);
+    color:white;
+    border-radius:12px;
+}
+
+.price_inquiry_header h1{
+    font-size:26px;
+    margin-bottom:5px;
+}
+
+.price_inquiry_header p{
+    opacity:0.9;
+}
+
+.price_box{
+    background:#f8fafc;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    font-size:22px;
+    font-weight:bold;
+    color:#16a34a;
+}
+
+.price_table .o_data_row:hover{
+    background:#f1f5f9;
+}
+
+.price_table{
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.price_table th{
+    background:#f1f5f9;
+    font-weight:600;
+}
+
+.o_field_widget.o_field_url a{
+    background:#3b82f6;
+    color:white !important;
+    padding:5px 10px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.o_field_widget.o_field_url a:hover{
+    background:#2563eb;
+}
