@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_price_inquiry" model="ir.actions.act_window">
+        <field name="name">🔎 استعلام قیمت</field>
+        <field name="res_model">price.inquiry</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <menuitem id="menu_price_inquiry_root"
+              name="تی‌استعلام"
+              sequence="10"
+              web_icon="tiestelaam,static/description/icon.png"/>
+
+
+    <menuitem id="menu_price_inquiry_list"
+              name="📋 لیست استعلام‌ها"
+              parent="menu_price_inquiry_root"
+              action="action_price_inquiry"
+              sequence="1"/>
+
+
+    <record id="view_price_inquiry_form" model="ir.ui.view">
+        <field name="name">price.inquiry.form</field>
+        <field name="model">price.inquiry</field>
+        <field name="arch" type="xml">
+
+            <form string="🔎 استعلام قیمت">
+
+                <header>
+
+                    <button name="action_inquiry_price"
+                            string="🚀 شروع استعلام"
+                            type="object"
+                            class="btn btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <button name="action_inquiry_price"
+                            string="🔄 تلاش مجدد"
+                            type="object"
+                            class="btn btn-warning"
+                            invisible="state != 'failed'"/>
+
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,done"/>
+
+                </header>
+
+
+                <sheet>
+
+                    <group>
+
+                        <group string="📦 اطلاعات محصول">
+
+                            <field name="name"
+                                   placeholder="مثلا: آیفون 13"/>
+
+                            <field name="product_id"/>
+
+                            <field name="source"/>
+
+                        </group>
+
+
+                        <group string="📊 نتیجه استعلام">
+
+                            <div class="price_box">
+                                <field name="price"
+                                       widget="monetary"
+                                       readonly="1"/>
+                            </div>
+
+                            <field name="inquiry_date"
+                                   readonly="1"/>
+
+                            <field name="url"
+                                widget="url"
+                                string="🔗"
+                                readonly="1"
+                                options="{'text': '🔎 باز کردن محصول'}"/>
+
+                        </group>
+
+                    </group>
+
+
+                    <div class="oe_button_box" name="button_box">
+
+                        <button name="action_view_lines"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart">
+
+                            <field name="line_count"
+                                widget="statinfo"
+                                string="تعداد نتایج"/>
+
+                        </button>
+
+                    </div>
+
+
+                    <group string="🛍 محصولات مشابه"
+                           colspan="2"
+                           invisible="line_count == 0">
+
+                        <field name="line_ids"
+                               colspan="2"
+                               readonly="1">
+
+                            <list string="محصولات مشابه"
+                                  create="0"
+                                  edit="0"
+                                  class="price_table">
+
+                                <field name="sequence" string="#"/>
+
+                                <field name="name" string="نام محصول"/>
+
+                                <field name="price"
+                                       widget="monetary"
+                                       string="💰 قیمت"/>
+
+                                <field name="button_url"
+                                        widget="html"
+                                        string="🔗 مشاهده"/>
+
+
+
+                            </list>
+
+                        </field>
+
+                    </group>
+
+
+                    <group string="⚠ خطا"
+                           colspan="2"
+                           invisible="state != 'failed'">
+
+                        <div class="alert alert-danger">
+
+                            <field name="error_message"
+                                   readonly="1"
+                                   nolabel="1"/>
+
+                        </div>
+
+                    </group>
+
+
+                </sheet>
+
+            </form>
+
+        </field>
+    </record>
+
+
+
+    <record id="view_price_inquiry_list" model="ir.ui.view">
+        <field name="name">price.inquiry.list</field>
+        <field name="model">price.inquiry</field>
+        <field name="arch" type="xml">
+
+            <list string="📋 لیست استعلام قیمت"
+                  default_order="create_date desc">
+
+                <field name="name" string="📦 کالا"/>
+
+                <field name="source" string="🌐 منبع"/>
+
+                <field name="price"
+                       widget="monetary"
+                       string="💰 قیمت"/>
+
+                <field name="line_count"
+                       string="🔎 نتایج"/>
+
+                <field name="inquiry_date"
+                       string="📅 تاریخ"/>
+
+                <field name="state"
+                       widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-danger="state == 'failed'"
+                       string="وضعیت"/>
+
+            </list>
+
+        </field>
+    </record>
+
+
+
+    <record id="view_price_inquiry_search" model="ir.ui.view">
+        <field name="name">price.inquiry.search</field>
+        <field name="model">price.inquiry</field>
+        <field name="arch" type="xml">
+
+            <search string="🔎 جستجوی استعلام">
+
+                <field name="name"/>
+
+                <field name="product_id"/>
+
+                <filter string="✅ موفق"
+                        name="done"
+                        domain="[('state', '=', 'done')]"/>
+
+                <filter string="❌ ناموفق"
+                        name="failed"
+                        domain="[('state', '=', 'failed')]"/>
+
+                <group expand="0" string="📊 گروه‌بندی">
+
+                    <filter string="🌐 منبع"
+                            name="group_source"
+                            context="{'group_by': 'source'}"/>
+
+                </group>
+
+            </search>
+
+        </field>
+    </record>
+
+</odoo>
